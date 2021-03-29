@@ -16,26 +16,33 @@ const DateTime = asNexusMethod(GraphQLDateTime, 'date')
 const Query = objectType({
   name: 'Query',
   definition(t) {
-    t.nonNull.list.nonNull.field('allUsers', {
-      type: 'User',
+    t.nonNull.list.nonNull.field('allInstructors', {
+      type: 'Instructor',
       resolve: (_parent, _args, context) => {
-        return context.prisma.user.findMany()
+        return context.prisma.instructor.findMany()
       },
     })
 
-    t.nullable.field('postById', {
-      type: 'Post',
+    t.nonNull.list.nonNull.field('allCourses', {
+      type: 'Course',
+      resolve: (_parent, _args, context) => {
+        return context.prisma.course.findMany()
+      },
+    })
+
+    t.nullable.field('courseById', {
+      type: 'Course',
       args: {
         id: intArg(),
       },
       resolve: (_parent, args, context) => {
-        return context.prisma.post.findUnique({
+        return context.prisma.course.findUnique({
           where: { id: args.id || undefined },
         })
       },
     })
 
-    t.nonNull.list.nonNull.field('feed', {
+/*     t.nonNull.list.nonNull.field('feed', {
       type: 'Post',
       args: {
         searchString: stringArg(),
@@ -65,9 +72,9 @@ const Query = objectType({
           orderBy: args.orderBy || undefined,
         })
       },
-    })
+    }) */
 
-    t.list.field('draftsByUser', {
+    /* t.list.field('draftsByUser', {
       type: 'Post',
       args: {
         userUniqueInput: nonNull(
@@ -90,11 +97,11 @@ const Query = objectType({
             },
           })
       },
-    })
+    }) */
   },
 })
 
-const Mutation = objectType({
+/* const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
     t.nonNull.field('signupUser', {
@@ -202,51 +209,51 @@ const Mutation = objectType({
       },
     })
   },
-})
+}) */
 
-const User = objectType({
-  name: 'User',
+const Instructor = objectType({
+  name: 'Instructor',
   definition(t) {
     t.nonNull.int('id')
     t.string('name')
     t.nonNull.string('email')
-    t.nonNull.list.nonNull.field('posts', {
-      type: 'Post',
+    t.nonNull.list.nonNull.field('courses', {
+      type: 'Course',
       resolve: (parent, _, context) => {
-        return context.prisma.user
+        return context.prisma.instructor
           .findUnique({
             where: { id: parent.id || undefined },
           })
-          .posts()
+          .courses()
       },
     })
   },
 })
 
-const Post = objectType({
-  name: 'Post',
+const Course = objectType({
+  name: 'Course',
   definition(t) {
     t.nonNull.int('id')
     t.nonNull.field('createdAt', { type: 'DateTime' })
     t.nonNull.field('updatedAt', { type: 'DateTime' })
     t.nonNull.string('title')
-    t.string('content')
-    t.nonNull.boolean('published')
-    t.nonNull.int('viewCount')
-    t.field('author', {
-      type: 'User',
+    t.string('description')
+    t.string('defaultCredits')
+    t.string('courseCode')
+    t.field('instructor', {
+      type: 'Instructor',
       resolve: (parent, _, context) => {
-        return context.prisma.post
+        return context.prisma.course
           .findUnique({
             where: { id: parent.id || undefined },
           })
-          .author()
+          .instructor()
       },
     })
   },
 })
 
-const SortOrder = enumType({
+/* const SortOrder = enumType({
   name: 'SortOrder',
   members: ['asc', 'desc'],
 })
@@ -281,19 +288,19 @@ const UserCreateInput = inputObjectType({
     t.string('name')
     t.list.nonNull.field('posts', { type: 'PostCreateInput' })
   },
-})
+}) */
 
 const schema = makeSchema({
   types: [
     Query,
-    Mutation,
-    Post,
-    User,
-    UserUniqueInput,
-    UserCreateInput,
-    PostCreateInput,
-    SortOrder,
-    PostOrderByUpdatedAtInput,
+    //Mutation,
+    Course,
+    Instructor,
+    // UserUniqueInput,
+    // UserCreateInput,
+    // PostCreateInput,
+    // SortOrder,
+    // PostOrderByUpdatedAtInput,
     DateTime,
   ],
   outputs: {
