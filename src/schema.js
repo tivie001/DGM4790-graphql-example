@@ -101,10 +101,10 @@ const Query = objectType({
   },
 })
 
-/* const Mutation = objectType({
+const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
-    t.nonNull.field('signupUser', {
+    /* t.nonNull.field('signupUser', {
       type: 'User',
       args: {
         data: nonNull(
@@ -129,32 +129,32 @@ const Query = objectType({
           },
         })
       },
-    })
+    }) */
 
-    t.field('createDraft', {
-      type: 'Post',
+    t.field('createCourse', {
+      type: 'Course',
       args: {
         data: nonNull(
           arg({
-            type: 'PostCreateInput',
+            type: 'CourseCreateInput',
           }),
         ),
-        authorEmail: nonNull(stringArg()),
+        instructorEmail: nonNull(stringArg()),
       },
       resolve: (_, args, context) => {
-        return context.prisma.post.create({
+        return context.prisma.course.create({
           data: {
             title: args.data.title,
-            content: args.data.content,
-            author: {
-              connect: { email: args.authorEmail },
+            description: args.data.description,
+            instructor: {
+              connect: { email: args.instructorEmail },
             },
           },
         })
       },
     })
 
-    t.field('togglePublishPost', {
+    /* t.field('togglePublishPost', {
       type: 'Post',
       args: {
         id: nonNull(intArg()),
@@ -178,9 +178,9 @@ const Query = objectType({
           data: { published: !post.published },
         })
       },
-    })
+    }) */
 
-    t.field('incrementPostViewCount', {
+    /* t.field('incrementPostViewCount', {
       type: 'Post',
       args: {
         id: nonNull(intArg()),
@@ -195,9 +195,9 @@ const Query = objectType({
           },
         })
       },
-    })
+    }) */
 
-    t.field('deletePost', {
+    /* t.field('deletePost', {
       type: 'Post',
       args: {
         id: nonNull(intArg()),
@@ -207,9 +207,9 @@ const Query = objectType({
           where: { id: args.id },
         })
       },
-    })
+    }) */
   },
-}) */
+}) 
 
 const Instructor = objectType({
   name: 'Instructor',
@@ -271,16 +271,17 @@ const UserUniqueInput = inputObjectType({
     t.int('id')
     t.string('email')
   },
-})
+})*/
 
-const PostCreateInput = inputObjectType({
-  name: 'PostCreateInput',
+const CourseCreateInput = inputObjectType({
+  name: 'CourseCreateInput',
   definition(t) {
     t.nonNull.string('title')
-    t.string('content')
+    t.string('description')
   },
 })
 
+/*
 const UserCreateInput = inputObjectType({
   name: 'UserCreateInput',
   definition(t) {
@@ -293,12 +294,12 @@ const UserCreateInput = inputObjectType({
 const schema = makeSchema({
   types: [
     Query,
-    //Mutation,
+    Mutation,
     Course,
     Instructor,
     // UserUniqueInput,
     // UserCreateInput,
-    // PostCreateInput,
+    CourseCreateInput,
     // SortOrder,
     // PostOrderByUpdatedAtInput,
     DateTime,
