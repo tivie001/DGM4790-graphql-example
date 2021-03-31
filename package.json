@@ -11,7 +11,8 @@
   },
   "scripts": {
     "dev": "nodemon src/server.js",
-    "seed": "npx prisma db seed --preview-feature"
+    "seed": "npx prisma db seed --preview-feature",
+    "seed:uvu": "node prisma/seed/seedUVUCourses.js"
   },
   "devDependencies": {
     "nodemon": "2.0.7",
