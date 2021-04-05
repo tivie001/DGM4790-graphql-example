@@ -3,9 +3,14 @@ const uvu_courses = require('./uvu_courses.json')
 
 const prisma = new PrismaClient()
 
+const course_prefixes = ['DGM','CS','IT','INFO']
+
 async function loadUVUCourses() {
-const allCourses = uvu_courses['comet'].course
-    return allCourses.map((crs) => {
+    const allCourses = uvu_courses['comet'].course
+    const cetCourses = allCourses.filter(
+        (course) => course_prefixes.includes(course.prefix._text)
+    )
+    return cetCourses.map((crs) => {
         return {
             data: {
                 title: crs.title._text,
