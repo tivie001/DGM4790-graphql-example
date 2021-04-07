@@ -104,32 +104,24 @@ const Query = objectType({
 const Mutation = objectType({
   name: 'Mutation',
   definition(t) {
-    /* t.nonNull.field('signupUser', {
-      type: 'User',
+  t.nonNull.field('createInstructor', {
+      type: 'Instructor',
       args: {
         data: nonNull(
           arg({
-            type: 'UserCreateInput',
+            type: 'InstructorCreateInput',
           }),
         ),
       },
       resolve: (_, args, context) => {
-        const postData = args.data.posts
-          ? args.data.posts.map((post) => {
-              return { title: post.title, content: post.content || undefined }
-            })
-          : []
-        return context.prisma.user.create({
+        return context.prisma.instructor.create({
           data: {
             name: args.data.name,
             email: args.data.email,
-            posts: {
-              create: postData,
-            },
           },
         })
       },
-    }) */
+    }) 
 
     t.field('createCourse', {
       type: 'Course',
@@ -197,17 +189,17 @@ const Mutation = objectType({
       },
     }) */
 
-    /* t.field('deletePost', {
-      type: 'Post',
+    t.field('deleteCourse', {
+      type: 'Course',
       args: {
         id: nonNull(intArg()),
       },
       resolve: (_, args, context) => {
-        return context.prisma.post.delete({
+        return context.prisma.course.delete({
           where: { id: args.id },
         })
       },
-    }) */
+    })
   },
 }) 
 
@@ -281,15 +273,14 @@ const CourseCreateInput = inputObjectType({
   },
 })
 
-/*
-const UserCreateInput = inputObjectType({
-  name: 'UserCreateInput',
+
+const InstructorCreateInput = inputObjectType({
+  name: 'InstructorCreateInput',
   definition(t) {
     t.nonNull.string('email')
     t.string('name')
-    t.list.nonNull.field('posts', { type: 'PostCreateInput' })
   },
-}) */
+})
 
 const schema = makeSchema({
   types: [
@@ -298,7 +289,7 @@ const schema = makeSchema({
     Course,
     Instructor,
     // UserUniqueInput,
-    // UserCreateInput,
+    InstructorCreateInput,
     CourseCreateInput,
     // SortOrder,
     // PostOrderByUpdatedAtInput,

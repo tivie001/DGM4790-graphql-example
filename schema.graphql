@@ -30,8 +30,15 @@ type Instructor {
   name: String
 }
 
+input InstructorCreateInput {
+  email: String!
+  name: String
+}
+
 type Mutation {
   createCourse(data: CourseCreateInput!, instructorEmail: String!): Course
+  createInstructor(data: InstructorCreateInput!): Instructor!
+  deleteCourse(id: Int!): Course
 }
 
 type Query {
