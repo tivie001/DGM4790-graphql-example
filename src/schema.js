@@ -28,186 +28,75 @@ const Query = objectType({
         return context.prisma.watchlist.findMany()
       },
     })
-    t.nullable.field('movieById', {
-      type: 'Movie',
-      args: {
-        id: intArg(),
+    t.nonNull.list.nonNull.field('tvShow', {
+      type: 'Tvshow',
+      resolve: (_parent, _args, context) => {
+        return context.prisma.tvshow.findMany()
       },
-      resolve: (_parent, args, context) => {
-        return context.prisma.movie.findUnique({
-          where: { id: args.id || undefined },
+    })
+  }
+})
+
+const Mutation = objectType({
+  name: 'Mutation',
+  definition(t) {
+    t.nonNull.field('addMovieToWatchlist', {
+      type: 'Watchlist',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'AddMovieInput',
+          }),
+        ),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.watchlist.create({
+          data: {
+            title: args.data.title,
+            description: args.data.description,
+            image: args.data.image,
+            releaseDate: args.data.releaseDate,
+            watched: args.data.watched
+          },
         })
       },
     })
-
-    // t.nonNull.list.nonNull.field('feed', {
-    //   type: 'Post',
-    //   args: {
-    //     searchString: stringArg(),
-    //     skip: intArg(),
-    //     take: intArg(),
-    //     orderBy: arg({
-    //       type: 'PostOrderByUpdatedAtInput',
-    //     }),
-    //   },
-    //   resolve: (_parent, args, context) => {
-    //     const or = args.searchString
-    //       ? {
-    //         OR: [
-    //           { title: { contains: args.searchString } },
-    //           { content: { contains: args.searchString } },
-    //         ],
-    //       }
-    //       : {}
-
-    //     return context.prisma.post.findMany({
-    //       where: {
-    //         published: true,
-    //         ...or,
-    //       },
-    //       take: args.take || undefined,
-    //       skip: args.skip || undefined,
-    //       orderBy: args.orderBy || undefined,
-    //     })
-    //   },
-    // })
-
-    // t.list.field('draftsByUser', {
-    //   type: 'Post',
-    //   args: {
-    //     userUniqueInput: nonNull(
-    //       arg({
-    //         type: 'UserUniqueInput',
-    //       }),
-    //     ),
-    //   },
-    //   resolve: (_parent, args, context) => {
-    //     return context.prisma.user
-    //       .findUnique({
-    //         where: {
-    //           id: args.userUniqueInput.id || undefined,
-    //           email: args.userUniqueInput.email || undefined,
-    //         },
-    //       })
-    //       .posts({
-    //         where: {
-    //           published: false,
-    //         },
-    //       })
-    //   },
-    // })
+    t.field('updateWatchListMovie', {
+      type: 'Watchlist',
+      args: {
+        id: nonNull(intArg()),
+        data: nonNull(
+          arg({
+            type: 'AddMovieInput',
+          }),
+        ),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.watchlist.update({
+          where: { id: args.id || undefined },
+          data: {
+            title: args.data.title,
+            description: args.data.description,
+            image: args.data.image,
+            releaseDate: args.data.releaseDate,
+            watched: args.data.watched
+          },
+        })
+      },
+    })
+    t.field('deleteMovieWatchlist', {
+      type: 'Watchlist',
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: (_, args, context) => {
+        return context.prisma.watchlist.delete({
+          where: { id: args.id },
+        })
+      },
+    })
   },
 })
-
-// const Mutation = objectType({
-//   name: 'Mutation',
-//   definition(t) {
-//     t.nonNull.field('signupUser', {
-//       type: 'User',
-//       args: {
-//         data: nonNull(
-//           arg({
-//             type: 'UserCreateInput',
-//           }),
-//         ),
-//       },
-//       resolve: (_, args, context) => {
-//         const postData = args.data.posts
-//           ? args.data.posts.map((post) => {
-//             return { title: post.title, content: post.content || undefined }
-//           })
-//           : []
-//         return context.prisma.user.create({
-//           data: {
-//             name: args.data.name,
-//             email: args.data.email,
-//             posts: {
-//               create: postData,
-//             },
-//           },
-//         })
-//       },
-//     })
-
-//     t.field('createDraft', {
-//       type: 'Post',
-//       args: {
-//         data: nonNull(
-//           arg({
-//             type: 'PostCreateInput',
-//           }),
-//         ),
-//         authorEmail: nonNull(stringArg()),
-//       },
-//       resolve: (_, args, context) => {
-//         return context.prisma.post.create({
-//           data: {
-//             title: args.data.title,
-//             content: args.data.content,
-//             author: {
-//               connect: { email: args.authorEmail },
-//             },
-//           },
-//         })
-//       },
-//     })
-
-//     t.field('togglePublishPost', {
-//       type: 'Post',
-//       args: {
-//         id: nonNull(intArg()),
-//       },
-//       resolve: async (_, args, context) => {
-//         const post = await context.prisma.post.findUnique({
-//           where: { id: args.id || undefined },
-//           select: {
-//             published: true,
-//           },
-//         })
-
-//         if (!post) {
-//           throw new Error(
-//             `Post with ID ${args.id} does not exist in the database.`,
-//           )
-//         }
-
-//         return context.prisma.post.update({
-//           where: { id: args.id || undefined },
-//           data: { published: !post.published },
-//         })
-//       },
-//     })
-
-//     t.field('incrementPostViewCount', {
-//       type: 'Post',
-//       args: {
-//         id: nonNull(intArg()),
-//       },
-//       resolve: (_, args, context) => {
-//         return context.prisma.post.update({
-//           where: { id: args.id || undefined },
-//           data: {
-//             viewCount: {
-//               increment: 1,
-//             },
-//           },
-//         })
-//       },
-//     })
-
-//     t.field('deletePost', {
-//       type: 'Post',
-//       args: {
-//         id: nonNull(intArg()),
-//       },
-//       resolve: (_, args, context) => {
-//         return context.prisma.post.delete({
-//           where: { id: args.id },
-//         })
-//       },
-//     })
-//   },
-// })
 
 const Movie = objectType({
   name: 'Movie',
@@ -230,26 +119,29 @@ const Watchlist = objectType({
     t.boolean('watched')
   },
 })
+const Tvshow = objectType({
+  name: 'Tvshow',
+  definition(t) {
+    t.nonNull.int('id')
+    t.nonNull.string('title')
+    t.string('description')
+    t.string('image')
+    t.field('releaseDate', { type: 'DateTime' })
+    t.string('voteAverage')
+  },
+})
 
-// const SortOrder = enumType({
-//   name: 'SortOrder',
-//   members: ['asc', 'desc'],
-// })
-
-// const PostOrderByUpdatedAtInput = inputObjectType({
-//   name: 'PostOrderByUpdatedAtInput',
-//   definition(t) {
-//     t.nonNull.field('updatedAt', { type: 'SortOrder' })
-//   },
-// })
-
-// const UserUniqueInput = inputObjectType({
-//   name: 'UserUniqueInput',
-//   definition(t) {
-//     t.int('id')
-//     t.string('email')
-//   },
-// })
+const AddMovieInput = inputObjectType({
+  name: 'AddMovieInput',
+  definition(t) {
+    t.nonNull.int('id')
+    t.nonNull.string('title')
+    t.string('description')
+    t.string('image')
+    t.field('releaseDate', { type: 'DateTime' })
+    t.boolean('watched')
+  },
+})
 
 // const PostCreateInput = inputObjectType({
 //   name: 'PostCreateInput',
@@ -271,13 +163,12 @@ const Watchlist = objectType({
 const schema = makeSchema({
   types: [
     Query,
-    // Mutation,
+    Mutation,
     Movie,
     Watchlist,
-    // UserUniqueInput,
-    // UserCreateInput,
+    Tvshow,
+    AddMovieInput,
     // PostCreateInput,
-    // SortOrder,
     // PostOrderByUpdatedAtInput,
     DateTime,
   ],

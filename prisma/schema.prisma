@@ -3,13 +3,18 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
 
 model Movie {
   id          Int       @id @default(autoincrement())
-  title       String    @unique
+  title       String
   description String?
   image       String?
   releaseDate DateTime?
@@ -17,22 +22,18 @@ model Movie {
 
 model Watchlist {
   id          Int       @id @default(autoincrement())
-  title       String    @unique
+  title       String
   description String?
   image       String?
   releaseDate DateTime?
   watched     Boolean?
 }
 
-// model Course {
-//   id             Int         @id @default(autoincrement())
-//   createdAt      DateTime    @default(now())
-//   updatedAt      DateTime    @updatedAt
-//   title          String
-//   description    String?
-//   defaultCredits String?
-//   courseCode     String?
-//   //termsOffered String[]
-//   instructor     Instructor? @relation(fields: [instructorId], references: [id])
-//   instructorId   Int?
-// }
+model Tvshow {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  image       String?
+  releaseDate DateTime?
+  voteAverage String?
+}
