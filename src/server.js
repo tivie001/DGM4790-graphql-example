@@ -5,6 +5,7 @@ const { context } = require('./context')
 const server = new ApolloServer({
   schema: schema,
   context: context,
+  introspection: true
 })
 
 server.listen(process.env.PORT || 4000).then(async ({ url }) => {
