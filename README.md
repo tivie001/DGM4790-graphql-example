@@ -44,8 +44,6 @@ query {
 
 ### 3. Get all TV Shows & Movies on Watchlist
 
-Install npm dependencies:
-
 ```graphql
 query {
   watchList {
