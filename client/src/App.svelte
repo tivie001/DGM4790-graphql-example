@@ -10,7 +10,7 @@
   export let url = ''
 
   const client = new ApolloClient({
-    uri: 'https://docker-watchly-app.herokuapp.com/graphql',
+    uri: '/graphql',
 
     onError: ({ networkError, graphQLErrors }) => {
       console.log('graphQLErrors', graphQLErrors)
