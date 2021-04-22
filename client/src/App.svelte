@@ -10,7 +10,7 @@
   export let url = ''
 
   const client = new ApolloClient({
-    uri: 'http://0.0.0.0:5432/graphql',
+    uri: 'https://0.0.0.0:5432/graphql',
 
     onError: ({ networkError, graphQLErrors }) => {
       console.log('graphQLErrors', graphQLErrors)
