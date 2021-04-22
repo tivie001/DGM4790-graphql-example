@@ -13,6 +13,15 @@ Created By: Tyler Ivie
 
 ## At least 3 Query resolvers allowing users to get data from your server
 
+**_ To run the graphql endpoints go to: http://localhost:4000/ _**
+
+- To see it in action on the Watchly App first, run the following command:
+  `npm run dev`
+- Next, navigate to: [https://docker-watchly-app.herokuapp.com/graphql](https://docker-watchly-app.herokuapp.com/graphql)
+- The following graphql commands get the following data and display them each said "section":
+
+## My Favorite Movies Section
+
 ### 1. Get all popular movies
 
 ```graphql
@@ -26,6 +35,8 @@ query {
   }
 }
 ```
+
+## My Favorite TV Shows Section
 
 ### 2. Get all popular TV Shows
 
@@ -41,6 +52,8 @@ query {
   }
 }
 ```
+
+## Watchlist Section
 
 ### 3. Get all TV Shows & Movies on Watchlist
 
