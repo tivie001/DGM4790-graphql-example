@@ -13,7 +13,7 @@ Created By: Tyler Ivie
 
 ## At least 3 Query resolvers allowing users to get data from your server
 
-**_ To run the graphql endpoints go to: http://localhost:4000/ _**
+<span style="color:red">**\*\*\*\*** To run the graphql endpoints go to: http://localhost:4000/ **\*\*\*\***</span>
 
 - To see it in action on the Watchly App first, run the following command:
   `npm run dev`
