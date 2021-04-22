@@ -1,6 +1,6 @@
 FROM node:14
 
-WORKDIR /app
+WORKDIR /
 
 COPY package.json .
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5050
 
-CMD [ "node", "app.js" ]
+CMD [ "node", "index.js" ]
