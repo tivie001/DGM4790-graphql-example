@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "rollup -c && mv build ../public",
+    "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear"
   },
@@ -27,6 +27,5 @@
     "svelte-icons": "^2.1.0",
     "svelte-routing": "^1.6.0",
     "svelte-simple-modal": "^0.10.0"
-  },
-  "proxy": "http://localhost:4000"
+  }
 }
