@@ -15,8 +15,11 @@ Created By: Tyler Ivie
 
 <span style="color:red">**\*\*\*\*** To run the graphql endpoints go to: http://localhost:4000/ **\*\*\*\***</span>
 
-- To see it in action on the Watchly App first, run the following command:
+- To see it in action on the Watchly App first, run the following commands:
+
+  `npm install`
   `npm run dev`
+
 - Next, navigate to: [https://docker-watchly-app.herokuapp.com/graphql](https://docker-watchly-app.herokuapp.com/graphql)
 - The following graphql commands get the following data and display them each said "section":
 
