@@ -48,17 +48,63 @@
       }
     }
   `
+  const UPDATE_MOVIE = gql`
+    mutation updateWatchListMovie(
+      $id: Int!
+      $title: String!
+      $watched: Boolean
+    ) {
+      updateWatchListMovie(
+        id: $id
+        data: { id: 1, title: $title, watched: $watched }
+      ) {
+        id
+        title
+        watched
+      }
+    }
+  `
   const removeMovie = mutation(DELETE_MOVIE)
+  const updateMovie = mutation(UPDATE_MOVIE)
   const movies = query(GET_MOVIES)
   const watchlist = query(GET_WATCHLIST)
   const shows = query(GET_SHOWS)
 
   const deleteMovie = async (movieId, index) => {
+    console.log($watchlist.data['watchList'])
+    $watchlist.data['watchList'].splice(index, 1)
     console.log(movieId)
     try {
       removeMovie({ variables: { id: movieId } })
     } catch (err) {
       console.error(err)
+    }
+  }
+  const markAsWatched = async (movie, index) => {
+    changeCheckbox(index)
+    const updatedWatched = !movie.watched
+    console.log(movie)
+    try {
+      updateMovie({
+        variables: {
+          id: movie.id,
+          title: movie.title,
+          watched: updatedWatched,
+        },
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  function changeCheckbox(index) {
+    const checkboxes = document.querySelectorAll('.check')
+    let box = checkboxes.item(index)
+    if (box.classList.contains('unchecked-icon')) {
+      box.classList.remove('unchecked-icon')
+      box.classList.add('check-icon')
+    } else {
+      box.classList.remove('check-icon')
+      box.classList.add('unchecked-icon')
     }
   }
 </script>
@@ -135,6 +181,9 @@
   .img-container:hover .check-icon {
     visibility: visible;
   }
+  .img-container:hover .unchecked-icon {
+    visibility: visible;
+  }
   .trash-icon {
     color: red;
     position: relative;
@@ -143,6 +192,13 @@
     visibility: hidden;
   }
   .check-icon {
+    position: relative;
+    top: 70px;
+    right: 80px;
+    visibility: hidden;
+    color: #41db2a;
+  }
+  .unchecked-icon {
     color: white;
     position: relative;
     top: 70px;
@@ -160,6 +216,15 @@
     display: flex;
     flex-direction: row;
   }
+  .unchecked-icon:hover {
+    color: #41db2a;
+    cursor: pointer;
+  }
+  .check-icon:hover {
+    color: #ffffff;
+    cursor: pointer;
+  }
+
   @media only screen and (max-width: 639.99px) {
     .movie-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -250,15 +315,23 @@
                 alt={movie.title} />
               <div class="trash-icon-container">
                 <div
-                  class="icon trash-icon"
+                  class="icon trash-icon check"
                   on:click={deleteMovie(movie.id, i)}>
                   <FaTrashAlt />
                 </div>
-                <div
-                  class="icon check-icon"
-                  on:click={deleteMovie(movie.id, i)}>
-                  <FaCheckSquare />
-                </div>
+                {#if movie.watched}
+                  <div
+                    class="icon check-icon check"
+                    on:click={() => markAsWatched(movie, i)}>
+                    <FaCheckSquare />
+                  </div>
+                {:else}
+                  <div
+                    class="icon unchecked-icon check"
+                    on:click={() => markAsWatched(movie, i)}>
+                    <FaCheckSquare />
+                  </div>
+                {/if}
               </div>
             </div>
             <small>{movie.title}</small>
