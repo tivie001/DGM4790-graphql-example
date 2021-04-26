@@ -102,7 +102,7 @@ mutation addMovieToWatchlist {
 ```graphql
 mutation updateWatchListMovie {
   updateWatchListMovie(
-    id: 7
+    id: 9
     data: { id: 1, title: "Inception", watched: false }
   ) {
     id
