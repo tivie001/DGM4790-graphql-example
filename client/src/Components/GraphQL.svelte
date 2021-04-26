@@ -1,6 +1,10 @@
 <script>
-  import { query } from "svelte-apollo";
-  import { gql } from "apollo-boost";
+  import { query, mutation } from 'svelte-apollo'
+  import { gql } from 'apollo-boost'
+  import FaTrashAlt from 'svelte-icons/fa/FaTrashAlt.svelte'
+  import FaEdit from 'svelte-icons/fa/FaEdit.svelte'
+  import FaCheckSquare from 'svelte-icons/fa/FaCheckSquare.svelte'
+
   const GET_MOVIES = gql`
     query Movie {
       allMovies {
@@ -11,7 +15,7 @@
         releaseDate
       }
     }
-  `;
+  `
   const GET_WATCHLIST = gql`
     query Watchlist {
       watchList {
@@ -23,7 +27,7 @@
         watched
       }
     }
-  `;
+  `
   const GET_SHOWS = gql`
     query {
       tvShow {
@@ -35,16 +39,34 @@
         voteAverage
       }
     }
-  `;
-  const movies = query(GET_MOVIES);
-  const watchlist = query(GET_WATCHLIST);
-  const shows = query(GET_SHOWS);
+  `
+  const DELETE_MOVIE = gql`
+    mutation deleteMovieWatchlist($id: Int!) {
+      deleteMovieWatchlist(id: $id) {
+        title
+        id
+      }
+    }
+  `
+  const removeMovie = mutation(DELETE_MOVIE)
+  const movies = query(GET_MOVIES)
+  const watchlist = query(GET_WATCHLIST)
+  const shows = query(GET_SHOWS)
+
+  const deleteMovie = async (movieId, index) => {
+    console.log(movieId)
+    try {
+      removeMovie({ variables: { id: movieId } })
+    } catch (err) {
+      console.error(err)
+    }
+  }
 </script>
 
 <style>
   h1 {
     color: white;
-    font-family: "Raleway";
+    font-family: 'Raleway';
     text-transform: lowercase;
     font-variant: small-caps;
   }
@@ -85,20 +107,58 @@
     grid-auto-rows: minmax(100px, auto);
     padding: 1rem;
   }
-  .movie-item {
+  /* .movie-item {
     transition: 0.5s ease;
-  }
-  .movie-item:hover {
+  } */
+  /* .movie-item:hover {
     transform: scale(1.08);
     cursor: pointer;
-  }
+  } */
   .movie-item small {
     color: #fdfffc;
     margin-top: 10px;
     text-transform: uppercase;
   }
-  img:hover {
-    background-color: aqua;
+  .icon {
+    width: 30px;
+    height: 30px;
+  }
+  .img-container img:hover {
+    opacity: 0.2;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+  }
+  .img-container:hover .trash-icon {
+    visibility: visible;
+    opacity: initial;
+  }
+  .img-container:hover .check-icon {
+    visibility: visible;
+  }
+  .trash-icon {
+    color: red;
+    position: relative;
+    top: 60px;
+    right: 80px;
+    visibility: hidden;
+  }
+  .check-icon {
+    color: white;
+    position: relative;
+    top: 70px;
+    right: 80px;
+    visibility: hidden;
+  }
+  .edit-icon {
+    color: white;
+  }
+  .trash-icon:hover,
+  .check-icon:hover {
+    cursor: pointer;
+  }
+  .img-container {
+    display: flex;
+    flex-direction: row;
   }
   @media only screen and (max-width: 639.99px) {
     .movie-grid {
@@ -168,6 +228,11 @@
   </section>
   <section class="card-wrapper new-movies-container">
     <h1>Watchlist</h1>
+    <!-- <div on:click={() => toggleWatchlistEdit()}>
+      <div class="icon edit-icon">
+        <FaEdit />
+      </div>
+    </div> -->
     <div class="watchlist-grid">
       {#if $watchlist.loading}
         Loading...
@@ -175,7 +240,7 @@
         Error:
         {$movies.error.message}
       {:else}
-        {#each $watchlist.data['watchList'] as movie}
+        {#each $watchlist.data['watchList'] as movie, i}
           <div class="movie-item">
             <div class="img-container">
               <img
@@ -183,6 +248,18 @@
                 src="https://image.tmdb.org/t/p/w500{movie.image}"
                 height="200"
                 alt={movie.title} />
+              <div class="trash-icon-container">
+                <div
+                  class="icon trash-icon"
+                  on:click={deleteMovie(movie.id, i)}>
+                  <FaTrashAlt />
+                </div>
+                <div
+                  class="icon check-icon"
+                  on:click={deleteMovie(movie.id, i)}>
+                  <FaCheckSquare />
+                </div>
+              </div>
             </div>
             <small>{movie.title}</small>
           </div>
