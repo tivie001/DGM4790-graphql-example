@@ -1,9 +1,19 @@
 <script>
   import { query, mutation } from 'svelte-apollo'
+  import { getContext } from 'svelte'
   import { gql } from 'apollo-boost'
   import FaTrashAlt from 'svelte-icons/fa/FaTrashAlt.svelte'
   import FaEdit from 'svelte-icons/fa/FaEdit.svelte'
   import FaCheckSquare from 'svelte-icons/fa/FaCheckSquare.svelte'
+  import MovieDialog from './MovieDialogGraphQL.svelte'
+  const { open } = getContext('simple-modal')
+  const reQuery = () => {
+    watchlist.refetch()
+    console.log(watchlist)
+  }
+  const openDialog = (movie) => {
+    open(MovieDialog, { movie: movie, reQuery })
+  }
 
   const GET_MOVIES = gql`
     query Movie {
@@ -96,6 +106,7 @@
       console.error(err)
     }
   }
+
   function changeCheckbox(index) {
     const checkboxes = document.querySelectorAll('.check')
     let box = checkboxes.item(index)
@@ -253,7 +264,7 @@
         {$movies.error.message}
       {:else}
         {#each $movies.data['allMovies'] as movie}
-          <div class="movie-item">
+          <div class="movie-item" on:click={openDialog(movie)}>
             <div class="img-container">
               <img
                 class="fav"
@@ -277,7 +288,7 @@
         {$shows.error.message}
       {:else}
         {#each $shows.data['tvShow'] as show}
-          <div class="movie-item">
+          <div class="movie-item" on:click={openDialog(show)}>
             <div class="img-container">
               <img
                 class="fav"

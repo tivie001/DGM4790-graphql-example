@@ -103,6 +103,10 @@
       </div>
     </Route>
     <Route path="watchlist" component={MyWatchList} />
-    <Route path="graphql" component={GraphQL} />
+    <Route path="graphql">
+      <Modal>
+        <GraphQL />
+      </Modal>
+    </Route>
   </div>
 </Router>

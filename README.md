@@ -82,8 +82,8 @@ mutation addMovieToWatchlist {
   addMovieToWatchlist(
     data: {
       id: 1
-      title: "Inception"
-      description: "This is a description for the movie Inception"
+      title: "Mortal Kombat"
+      description: "Washed-up MMA fighter Cole Young, unaware of his heritage, and hunted by Emperor Shang Tsung's best warrior, Sub-Zero, seeks out and trains with Earth's greatest champions as he prepares to stand against the enemies of Outworld in a high stakes battle for the universe."
       releaseDate: "2010-03-24T00:00:00.000Z"
       watched: false
     }
@@ -102,8 +102,8 @@ mutation addMovieToWatchlist {
 ```graphql
 mutation updateWatchListMovie {
   updateWatchListMovie(
-    id: 11
-    data: { id: 1, title: "Inception", watched: false }
+    id: 1
+    data: { id: 1, title: "Godzilla vs. Kong", watched: false }
   ) {
     id
     watched
@@ -117,7 +117,7 @@ mutation updateWatchListMovie {
 
 ```graphql
 mutation deleteMovieWatchlist {
-  deleteMovieWatchlist(id: 11) {
+  deleteMovieWatchlist(id: 2) {
     title
     id
   }
