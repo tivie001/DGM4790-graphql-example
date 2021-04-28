@@ -7,6 +7,7 @@
   import { setClient } from 'svelte-apollo'
   import MyWatchList from './Components/MyWatchlist.svelte'
   import GraphQL from './Components/GraphQL.svelte'
+  import Notifications from 'svelte-notifications'
   export let url = ''
 
   const client = new ApolloClient({
@@ -97,16 +98,20 @@
     </section>
     <Route path="/">
       <div class="wrapper">
-        <Modal>
-          <Movies />
-        </Modal>
+        <Notifications>
+          <Modal>
+            <Movies />
+          </Modal>
+        </Notifications>
       </div>
     </Route>
     <Route path="watchlist" component={MyWatchList} />
     <Route path="graphql">
-      <Modal>
-        <GraphQL />
-      </Modal>
+      <Notifications>
+        <Modal>
+          <GraphQL />
+        </Modal>
+      </Notifications>
     </Route>
   </div>
 </Router>

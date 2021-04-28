@@ -6,6 +6,8 @@
   import MovieDialog from './MovieDialog.svelte'
   import FaStar from 'svelte-icons/fa/FaStar.svelte'
   import { gql } from 'apollo-boost'
+  import { getNotificationsContext } from 'svelte-notifications'
+  const { addNotification } = getNotificationsContext()
 
   const { close } = getContext('simple-modal')
 
@@ -56,7 +58,6 @@
     }
   `
   const addMovieToWatchlist = mutation(ADD_MOVIE)
-  const movies = query(GET_MOVIES)
   const addToWatchList = async (movie) => {
     try {
       addMovieToWatchlist({
@@ -69,10 +70,17 @@
           watched: movie.watched,
         },
       })
-      closeDialog()
-      _reQuery()
     } catch (err) {
       console.error(err)
+    } finally {
+      addNotification({
+        text: `${movie.title} successfully added to watchlist!`,
+        position: 'top-center',
+        type: 'success',
+        removeAfter: 3000,
+      })
+      closeDialog()
+      _reQuery()
     }
   }
 </script>

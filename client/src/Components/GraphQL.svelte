@@ -3,7 +3,6 @@
   import { getContext } from 'svelte'
   import { gql } from 'apollo-boost'
   import FaTrashAlt from 'svelte-icons/fa/FaTrashAlt.svelte'
-  import FaEdit from 'svelte-icons/fa/FaEdit.svelte'
   import FaCheckSquare from 'svelte-icons/fa/FaCheckSquare.svelte'
   import MovieDialog from './MovieDialogGraphQL.svelte'
   const { open } = getContext('simple-modal')
@@ -164,13 +163,6 @@
     grid-auto-rows: minmax(100px, auto);
     padding: 1rem;
   }
-  /* .movie-item {
-    transition: 0.5s ease;
-  } */
-  /* .movie-item:hover {
-    transform: scale(1.08);
-    cursor: pointer;
-  } */
   .movie-item small {
     color: #fdfffc;
     margin-top: 10px;
@@ -215,9 +207,6 @@
     top: 70px;
     right: 80px;
     visibility: hidden;
-  }
-  .edit-icon {
-    color: white;
   }
   .trash-icon:hover,
   .check-icon:hover {
@@ -304,11 +293,6 @@
   </section>
   <section class="card-wrapper new-movies-container">
     <h1>Watchlist</h1>
-    <!-- <div on:click={() => toggleWatchlistEdit()}>
-      <div class="icon edit-icon">
-        <FaEdit />
-      </div>
-    </div> -->
     <div class="watchlist-grid">
       {#if $watchlist.loading}
         Loading...
