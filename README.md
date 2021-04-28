@@ -18,7 +18,7 @@ Created By: Tyler Ivie
 - To see it in action on the Watchly App first, run the following commands:
 
   `npm install`
-  `npm run dev`
+  `npm run start`
 
 - Next, navigate to: [https://docker-watchly-app.herokuapp.com/graphql](https://docker-watchly-app.herokuapp.com/graphql)
 - The following graphql commands get the following data and display them each said "section":

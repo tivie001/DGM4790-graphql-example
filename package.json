@@ -16,7 +16,8 @@
     "migrate": "npx prisma migrate dev --name init",
     "seed": "npx prisma db seed --preview-feature",
     "seed:uvu": "node prisma/seed.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
