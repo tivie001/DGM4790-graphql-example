@@ -1,4 +1,4 @@
-# GraphQL Server Example
+# :tv: Watchly: A Movie & TV Show App
 
 ## Created By: Tyler Ivie
 
@@ -9,8 +9,6 @@
 ---
 
 # RESTful API Node Server Backend
-
----
 
 ## :truck: Routes
 
@@ -40,7 +38,9 @@ router.get('/favorites', async (req, res) => {
 })
 ```
 
-- This can be seen in the UI at the url: [https://docker-watchly-app.herokuapp.com/watchlist](https://docker-watchly-app.herokuapp.com/watchlist). Here you can see all the movies you have added to your watch or favorites lists. \*
+- This can be seen in the UI at the url: [https://docker-watchly-app.herokuapp.com](https://docker-watchly-app.herokuapp.com).
+- Then click on 'My Movies' in the navbar.
+- Here you can see all the movies you have added to your watch or favorites lists. \*
 
 3. As a user I can see all my favorite movies. (api/movies)
 4. As a user when navigated to the home screen, it is populated with currently trending movies for me to interact with. (https://docker-watchly-app.herokuapp.com)
@@ -131,7 +131,7 @@ router.post('/addFavorite', async (req, res) => {
 
 ### DELETE
 
-1. As a user I can removed a movie from my watchlist or favorites by clicking on the **TRASH ICON**. (api/deleteList/:id)
+1. As a user I can remove a movie from my watchlist or favorites by clicking on the **TRASH ICON**. (api/deleteList/:id)
 
 ```javascript
 router.delete('/deleteList/:id', (req, res) => {
@@ -152,6 +152,8 @@ router.delete('/deleteList/:id', (req, res) => {
   )
 })
 ```
+
+---
 
 # GraphQL Server Backend
 
