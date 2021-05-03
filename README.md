@@ -179,6 +179,7 @@ Deployed to Heroku
 
 - `npm install`
 - `npm run launchDocker`
+- `npm run migrate`
 - `npm run seed`
 - `npm start`
 
