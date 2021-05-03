@@ -175,8 +175,12 @@ Deployed to Heroku
 - To see it in action on the Watchly App do the following:
 
 1. Clone the repo
-2. run script `npm install`
-3. run script `npm start`
+2. Run scripts:
+
+- `npm install`
+- `npm run launchDocker`
+- `npm run seed`
+- `npm start`
 
 <span style="color:red">**\*\*\*\*** To run the graphql endpoints go to: http://localhost:4000/ **\*\*\*\***</span>
 
