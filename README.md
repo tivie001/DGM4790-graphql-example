@@ -10,6 +10,8 @@
 
 # RESTful API Node Server Backend
 
+Deployed to Heroku
+
 ## :truck: Routes
 
 ### GET
@@ -156,6 +158,8 @@ router.delete('/deleteList/:id', (req, res) => {
 ---
 
 # GraphQL Server Backend
+
+Deployed to Heroku
 
 ## Prisma as your data modeling tool
 
